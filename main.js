@@ -9,11 +9,11 @@
 
 // Variables
 
-  var container = document.querySelector('#gif')
-      loader = document.querySelector('#container')
-      stopgif = false
-      imageContainer = document.querySelector('.image-container')
-
+  var container = document.querySelector('#gif'),
+      loader = document.querySelector('#container'),
+      stopgif = false,
+      imageContainer = document.querySelector('.image-container'),
+      timeoutID,
       state = { loading: true }
   renderLoading(state, loader)
 
@@ -30,30 +30,48 @@
       renderLoading(state, loader)
       var processedData = dataProcessor(dataAsJson)
 
-      var timeoutID = []
+      var i = 0;
 
       function gifLoop(gifArray) {
         if (stopgif) {
           return
         }
-        for (var i = 0; i < gifArray.length; i++) {
-          gifArray[i]
-          var timeoutID = setTimeout(function(x) {
-            return function() {
-              var theTitle = processedData[x].articleTitle
-              var theDescription = processedData[x].articleDescription
-              renderTitle(theTitle, theDescription, container);
-              var keywords = theTitle.split(' ',3).join("-")
-              var gifLink = 'https://crossorigin.me/http://api.giphy.com/v1/gifs/search?q=' + keywords + '&api_key=dc6zaTOxFJmzC'
-              loadGif(gifLink);
-            };
-          }(i), 10000*i);
-          console.log('ID - ' + timeoutID);
+        var arrayTotal = gifArray.length;
+            timeoutID = setTimeout(function(x) {
+            var theTitle = gifArray[i].articleTitle,
+                theDescription = gifArray[i].articleDescription,
+                keywords = theTitle.split(' ',3).join("-"),
+                gifLink = 'https://crossorigin.me/http://api.giphy.com/v1/gifs/search?q='
+                  + keywords + '&api_key=dc6zaTOxFJmzC'
 
-        }
+            renderTitle(theTitle, theDescription, container);
+            loadGif(gifLink);
+            i++;
+            if (i === arrayTotal) {
+              i = 0
+            }
+            gifLoop(gifArray);
+        }, 1000);
 
-        // clearId(timeoutID);
 
+
+        // for (var i = 0; i < gifArray.length; i++) {
+        //   gifArray[i]
+        //   var timeoutID = setTimeout(function(x) {
+        //     return function() {
+        //       var theTitle = processedData[x].articleTitle
+        //       var theDescription = processedData[x].articleDescription
+        //       renderTitle(theTitle, theDescription, container);
+        //       var keywords = theTitle.split(' ',3).join("-")
+        //       var gifLink = 'https://crossorigin.me/http://api.giphy.com/v1/gifs/search?q=' + keywords + '&api_key=dc6zaTOxFJmzC'
+        //       loadGif(gifLink);
+        //     };
+        //   }(i), 10000*i);
+        //   console.log('ID - ' + timeoutID);
+
+          // clearId(timeoutID);
+
+        // }
 
       }
 
@@ -117,6 +135,7 @@ function keyboardCode(e) {
   // If up down left right keys are pressed then load take over mode
   if (keys[37] && keys[38] && keys[39] && keys[40]) {
     removeListner();
+    clearTimeout(timeoutID);
     loadForm();
     keywordForm();
   }
@@ -291,12 +310,7 @@ function keywordList(state) {
    }
  }
 
-// Clear timeout
 
-function clearId(timeoutID) {
-  for (var i = 0 ; i < timeoutID ; i++) clearTimeout(i);
-  console.log('Done' + timeoutID);
-}
 
 
 // Kick off the loading of RSS feed
