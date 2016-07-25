@@ -3,7 +3,7 @@
 Woodchipper - Mashup of News and gifs
 
 
-# Node modules
+# Local Server for testing
   http-server for local server
   cd into public folder
   $ http-server

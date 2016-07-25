@@ -11,7 +11,6 @@
 
   var container = document.querySelector('#gif'),
       loader = document.querySelector('#container'),
-      stopgif = false,
       imageContainer = document.querySelector('.image-container'),
       timeoutID,
       state = { loading: true }
@@ -21,7 +20,6 @@
 // Function takes in json and returns
 
   function loadRSS(url, dataProcessor) {
-
     fetch('https://crossorigin.me/http://mashable.com/stories.json').then((response) => {
       return response.json()
     }).then((dataAsJson) => {
@@ -30,14 +28,12 @@
       renderLoading(state, loader)
       var processedData = dataProcessor(dataAsJson)
 
-      var i = 0;
+      var i = 0,
+          loopTime = 1;
 
       function gifLoop(gifArray) {
-        if (stopgif) {
-          return
-        }
         var arrayTotal = gifArray.length;
-            timeoutID = setTimeout(function(x) {
+            timeoutID = setTimeout(function() {
             var theTitle = gifArray[i].articleTitle,
                 theDescription = gifArray[i].articleDescription,
                 keywords = theTitle.split(' ',3).join("-"),
@@ -47,31 +43,16 @@
             renderTitle(theTitle, theDescription, container);
             loadGif(gifLink);
             i++;
+            // var loopTime = 8000;
             if (i === arrayTotal) {
               i = 0
             }
+            if (i >= 1) {
+              loopTime = 8000
+            }
             gifLoop(gifArray);
-        }, 1000);
+        }, loopTime);
 
-
-
-        // for (var i = 0; i < gifArray.length; i++) {
-        //   gifArray[i]
-        //   var timeoutID = setTimeout(function(x) {
-        //     return function() {
-        //       var theTitle = processedData[x].articleTitle
-        //       var theDescription = processedData[x].articleDescription
-        //       renderTitle(theTitle, theDescription, container);
-        //       var keywords = theTitle.split(' ',3).join("-")
-        //       var gifLink = 'https://crossorigin.me/http://api.giphy.com/v1/gifs/search?q=' + keywords + '&api_key=dc6zaTOxFJmzC'
-        //       loadGif(gifLink);
-        //     };
-        //   }(i), 10000*i);
-        //   console.log('ID - ' + timeoutID);
-
-          // clearId(timeoutID);
-
-        // }
 
       }
 
@@ -188,7 +169,6 @@ function chipperView() {
   document.querySelector('#chipper-view').addEventListener('click', (e) => {
     e.preventDefault();
     var state = { loading: true }
-    renderLoading(state, loader)
     document.querySelector('.take-over').innerHTML = `  `
     loadRSS('https://crossorigin.me/http://mashable.com/stories.json', mashableDataProcessor)
     window.addEventListener('keydown', keyboardCode, false);
