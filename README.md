@@ -39,9 +39,6 @@ RSS Feed - Title and GIF
 
 Konami Code to show Settings
 
-
-- Make HTTP requests to your own Firebase URL
-
 - Make at least one HTTP request to a third-party server
 Giphy
 
@@ -51,19 +48,20 @@ Read - Read Keywords
 Update - Change Keywords
 Delete - Delete Keywords
 
-
+- Make HTTP requests to your own Firebase URL
+For Keywords
 
 - Perform DOM manipulation via JS (either directly, or with view templates)
-Add Feed text
+Add Feed text and add Gif url to background
 
 
 - Listen for events and add interactivity based on user input
 Conami Code to enable take over
-C64 start screen hack screen
-Text to asci art
+
 
 ## Future Improvements
-
+C64 start screen hack screen
+Text to asci art
 
 
 # ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) Unit Project #3: Single Page App
